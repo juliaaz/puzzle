@@ -64,27 +64,29 @@ def third_rule(board: list) -> bool:
     """
     uniqueness = True
     for row in range(0, 5):
-        color_seen = []
-        for column in range(0, 4):
-            cell = board[8 - row][row + column]
-            if cell.isdigit() and cell in color_seen:
-                uniqueness = False
-
-            else:
-                color_seen.append(cell)
-
-        for column in range(0, 5):
-            cell = board[8 - row - column][row]
-
-            if cell.isdigit() and cell in color_seen:
+        digit_seen = []
+        for column in range(4 - row, 9 - row):
+            cell = board[column][row]
+            # if (8 - row) != (row + column) and cell.isdigit():
+            if cell.isdigit() and cell in digit_seen:
                 uniqueness = False
             else:
-                color_seen.append(cell)
+                if cell in ('*', ' '):
+                    continue
+                else:
+                    digit_seen.append(cell)
+
+        for column in range(row + 1, row + 5):
+            cell = board[8 - row][column]
+            if cell.isdigit() and cell in digit_seen:
+                uniqueness = False
+            else:
+                if cell in ('*', ' '):
+                    continue
+                else:
+                    digit_seen.append(cell)
 
     return uniqueness
-
-# print(third_rule(["**** ****","***1 ****","**  3****","* 4 1****",\
-#     "     9 5 "," 6  83  *","3   1  **","  8  2***","  2  ****"]))
 
 
 def validate_board(board: list) -> bool:
